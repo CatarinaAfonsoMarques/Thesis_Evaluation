@@ -1,0 +1,295 @@
+<?xml version="1.0" ?>
+<!-- This file has been generated with DALG: The Data Aware Event Log Generator v2.0.0 -->
+<!-- https://github.com/CatarinaAfonsoMarques/DALGbase -->
+<log xmlns="http://www.xes-standard.org/" xes.version="1.0" creator="DALG">
+  <extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext"/>
+  <extension name="Time" prefix="time" uri="http://www.xes-standard.org/time.xesext"/>
+  <global scope="trace">
+    <string key="concept:name" value="DEFAULT"/>
+  </global>
+  <global scope="event">
+    <string key="concept:name" value="DEFAULT"/>
+    <date key="time:timestamp" value="1970-01-01T01:00:00.000+01:00"/>
+  </global>
+  <string key="concept:name" value="webshop_event_log"/>
+  <trace>
+    <string key="concept:name" value="order1"/>
+    <event>
+      <string key="concept:name" value="Login"/>
+      <date key="time:timestamp" value="2024-01-01T09:01:12+00:00"/>
+      <string key="db:query" value="SELECT id AS c, balance AS a, vip FROM customers ORDER BY RANDOM() LIMIT 1"/>
+      <string key="db:query_result" value="c=9, a=15420.75, vip=True"/>
+      <float key="db:query_duration_ms" value="19.014"/>
+      <int key="n_variables" value="3"/>
+      <int key="c" value="9"/>
+      <float key="a" value="15420.75"/>
+      <boolean key="vip" value="True"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Select Items"/>
+      <date key="time:timestamp" value="2024-01-01T09:02:24+00:00"/>
+      <string key="db:query" value="SELECT id FROM items ORDER BY RANDOM() LIMIT floor(random() * 5 + 1)::int"/>
+      <string key="db:query_result" value="p1=4, p2=6, p3=9"/>
+      <float key="db:query_duration_ms" value="14.602"/>
+      <int key="n_variables" value="5"/>
+      <int key="p1" value="4"/>
+      <int key="p2" value="6"/>
+      <int key="p3" value="9"/>
+      <int key="p4" value="0"/>
+      <int key="p5" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Compute total value"/>
+      <date key="time:timestamp" value="2024-01-01T09:03:26+00:00"/>
+      <string key="db:query" value="SELECT COALESCE(SUM(price), 0) AS t FROM items WHERE id = ANY(ARRAY_REMOVE(ARRAY[4, 6, 9, 0, 0]::bigint[], 0))"/>
+      <string key="db:query_result" value="132.00"/>
+      <float key="db:query_duration_ms" value="14.065"/>
+      <int key="n_variables" value="1"/>
+      <float key="t" value="132.0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Apply discount"/>
+      <date key="time:timestamp" value="2024-01-01T09:04:33+00:00"/>
+      <string key="db:query" value="SELECT ROUND(COALESCE(SUM(price), 0) * 0.8, 2) FROM items WHERE id = ANY(ARRAY_REMOVE(ARRAY[4, 6, 9, 0, 0]::bigint[], 0))"/>
+      <string key="db:query_result" value="105.60"/>
+      <float key="db:query_duration_ms" value="11.906"/>
+      <int key="n_variables" value="1"/>
+      <string key="guard" value="(vip==true)"/>
+      <float key="total" value="105.6"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Ship item/s"/>
+      <date key="time:timestamp" value="2024-01-01T09:05:46+00:00"/>
+      <string key="db:query" value="UPDATE customers SET balance = balance - 105.6 WHERE id = 9"/>
+      <string key="db:query_result" value="1"/>
+      <float key="db:query_duration_ms" value="14.853"/>
+      <int key="n_variables" value="1"/>
+      <string key="guard" value="(total&lt;=a)"/>
+      <float key="resultBalance" value="1.0"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="order2"/>
+    <event>
+      <string key="concept:name" value="Login"/>
+      <date key="time:timestamp" value="2024-01-01T09:06:55+00:00"/>
+      <string key="db:query" value="SELECT id AS c, balance AS a, vip FROM customers ORDER BY RANDOM() LIMIT 1"/>
+      <string key="db:query_result" value="c=7, a=1450.0, vip=True"/>
+      <float key="db:query_duration_ms" value="11.655"/>
+      <int key="n_variables" value="3"/>
+      <int key="c" value="7"/>
+      <float key="a" value="1450.0"/>
+      <boolean key="vip" value="True"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Select Items"/>
+      <date key="time:timestamp" value="2024-01-01T09:08:03+00:00"/>
+      <string key="db:query" value="SELECT id FROM items ORDER BY RANDOM() LIMIT floor(random() * 5 + 1)::int"/>
+      <string key="db:query_result" value="p1=3"/>
+      <float key="db:query_duration_ms" value="11.881"/>
+      <int key="n_variables" value="5"/>
+      <int key="p1" value="3"/>
+      <int key="p2" value="0"/>
+      <int key="p3" value="0"/>
+      <int key="p4" value="0"/>
+      <int key="p5" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Compute total value"/>
+      <date key="time:timestamp" value="2024-01-01T09:09:27+00:00"/>
+      <string key="db:query" value="SELECT COALESCE(SUM(price), 0) AS t FROM items WHERE id = ANY(ARRAY_REMOVE(ARRAY[3, 0, 0, 0, 0]::bigint[], 0))"/>
+      <string key="db:query_result" value="5.00"/>
+      <float key="db:query_duration_ms" value="30.447"/>
+      <int key="n_variables" value="1"/>
+      <float key="t" value="5.0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Apply discount"/>
+      <date key="time:timestamp" value="2024-01-01T09:10:20+00:00"/>
+      <string key="db:query" value="SELECT ROUND(COALESCE(SUM(price), 0) * 0.8, 2) FROM items WHERE id = ANY(ARRAY_REMOVE(ARRAY[3, 0, 0, 0, 0]::bigint[], 0))"/>
+      <string key="db:query_result" value="4.00"/>
+      <float key="db:query_duration_ms" value="25.241"/>
+      <int key="n_variables" value="1"/>
+      <string key="guard" value="(vip==true)"/>
+      <float key="total" value="4.0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Ship item/s"/>
+      <date key="time:timestamp" value="2024-01-01T09:11:15+00:00"/>
+      <string key="db:query" value="UPDATE customers SET balance = balance - 4.0 WHERE id = 7"/>
+      <string key="db:query_result" value="1"/>
+      <float key="db:query_duration_ms" value="15.004"/>
+      <int key="n_variables" value="1"/>
+      <string key="guard" value="(total&lt;=a)"/>
+      <float key="resultBalance" value="1.0"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="order3"/>
+    <event>
+      <string key="concept:name" value="Login"/>
+      <date key="time:timestamp" value="2024-01-01T09:12:17+00:00"/>
+      <string key="db:query" value="SELECT id AS c, balance AS a, vip FROM customers ORDER BY RANDOM() LIMIT 1"/>
+      <string key="db:query_result" value="c=16, a=27300.25, vip=True"/>
+      <float key="db:query_duration_ms" value="17.37"/>
+      <int key="n_variables" value="3"/>
+      <int key="c" value="16"/>
+      <float key="a" value="27300.25"/>
+      <boolean key="vip" value="True"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Select Items"/>
+      <date key="time:timestamp" value="2024-01-01T09:13:19+00:00"/>
+      <string key="db:query" value="SELECT id FROM items ORDER BY RANDOM() LIMIT floor(random() * 5 + 1)::int"/>
+      <string key="db:query_result" value="p1=7, p2=8, p3=2, p4=6"/>
+      <float key="db:query_duration_ms" value="13.65"/>
+      <int key="n_variables" value="5"/>
+      <int key="p1" value="7"/>
+      <int key="p2" value="8"/>
+      <int key="p3" value="2"/>
+      <int key="p4" value="6"/>
+      <int key="p5" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Compute total value"/>
+      <date key="time:timestamp" value="2024-01-01T09:14:29+00:00"/>
+      <string key="db:query" value="SELECT COALESCE(SUM(price), 0) AS t FROM items WHERE id = ANY(ARRAY_REMOVE(ARRAY[7, 8, 2, 6, 0]::bigint[], 0))"/>
+      <string key="db:query_result" value="303.99"/>
+      <float key="db:query_duration_ms" value="12.589"/>
+      <int key="n_variables" value="1"/>
+      <float key="t" value="303.99"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Apply discount"/>
+      <date key="time:timestamp" value="2024-01-01T09:15:42+00:00"/>
+      <string key="db:query" value="SELECT ROUND(COALESCE(SUM(price), 0) * 0.8, 2) FROM items WHERE id = ANY(ARRAY_REMOVE(ARRAY[7, 8, 2, 6, 0]::bigint[], 0))"/>
+      <string key="db:query_result" value="243.19"/>
+      <float key="db:query_duration_ms" value="12.708"/>
+      <int key="n_variables" value="1"/>
+      <string key="guard" value="(vip==true)"/>
+      <float key="total" value="243.19"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Ship item/s"/>
+      <date key="time:timestamp" value="2024-01-01T09:16:24+00:00"/>
+      <string key="db:query" value="UPDATE customers SET balance = balance - 243.19 WHERE id = 16"/>
+      <string key="db:query_result" value="1"/>
+      <float key="db:query_duration_ms" value="31.216"/>
+      <int key="n_variables" value="1"/>
+      <string key="guard" value="(total&lt;=a)"/>
+      <float key="resultBalance" value="1.0"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="order4"/>
+    <event>
+      <string key="concept:name" value="Login"/>
+      <date key="time:timestamp" value="2024-01-01T09:17:40+00:00"/>
+      <string key="db:query" value="SELECT id AS c, balance AS a, vip FROM customers ORDER BY RANDOM() LIMIT 1"/>
+      <string key="db:query_result" value="c=12, a=4500.5, vip=True"/>
+      <float key="db:query_duration_ms" value="12.222"/>
+      <int key="n_variables" value="3"/>
+      <int key="c" value="12"/>
+      <float key="a" value="4500.5"/>
+      <boolean key="vip" value="True"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Select Items"/>
+      <date key="time:timestamp" value="2024-01-01T09:18:39+00:00"/>
+      <string key="db:query" value="SELECT id FROM items ORDER BY RANDOM() LIMIT floor(random() * 5 + 1)::int"/>
+      <string key="db:query_result" value="p1=8, p2=3, p3=1, p4=4, p5=9"/>
+      <float key="db:query_duration_ms" value="26.364"/>
+      <int key="n_variables" value="5"/>
+      <int key="p1" value="8"/>
+      <int key="p2" value="3"/>
+      <int key="p3" value="1"/>
+      <int key="p4" value="4"/>
+      <int key="p5" value="9"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Compute total value"/>
+      <date key="time:timestamp" value="2024-01-01T09:19:34+00:00"/>
+      <string key="db:query" value="SELECT COALESCE(SUM(price), 0) AS t FROM items WHERE id = ANY(ARRAY_REMOVE(ARRAY[8, 3, 1, 4, 9]::bigint[], 0))"/>
+      <string key="db:query_result" value="159.48"/>
+      <float key="db:query_duration_ms" value="12.507"/>
+      <int key="n_variables" value="1"/>
+      <float key="t" value="159.48"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Apply discount"/>
+      <date key="time:timestamp" value="2024-01-01T09:20:29+00:00"/>
+      <string key="db:query" value="SELECT ROUND(COALESCE(SUM(price), 0) * 0.8, 2) FROM items WHERE id = ANY(ARRAY_REMOVE(ARRAY[8, 3, 1, 4, 9]::bigint[], 0))"/>
+      <string key="db:query_result" value="127.58"/>
+      <float key="db:query_duration_ms" value="22.293"/>
+      <int key="n_variables" value="1"/>
+      <string key="guard" value="(vip==true)"/>
+      <float key="total" value="127.58"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Ship item/s"/>
+      <date key="time:timestamp" value="2024-01-01T09:21:28+00:00"/>
+      <string key="db:query" value="UPDATE customers SET balance = balance - 127.58 WHERE id = 12"/>
+      <string key="db:query_result" value="1"/>
+      <float key="db:query_duration_ms" value="36.808"/>
+      <int key="n_variables" value="1"/>
+      <string key="guard" value="(total&lt;=a)"/>
+      <float key="resultBalance" value="1.0"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="order5"/>
+    <event>
+      <string key="concept:name" value="Login"/>
+      <date key="time:timestamp" value="2024-01-01T09:22:40+00:00"/>
+      <string key="db:query" value="SELECT id AS c, balance AS a, vip FROM customers ORDER BY RANDOM() LIMIT 1"/>
+      <string key="db:query_result" value="c=8, a=10000.0, vip=False"/>
+      <float key="db:query_duration_ms" value="12.048"/>
+      <int key="n_variables" value="3"/>
+      <int key="c" value="8"/>
+      <float key="a" value="10000.0"/>
+      <boolean key="vip" value="False"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Select Items"/>
+      <date key="time:timestamp" value="2024-01-01T09:23:56+00:00"/>
+      <string key="db:query" value="SELECT id FROM items ORDER BY RANDOM() LIMIT floor(random() * 5 + 1)::int"/>
+      <string key="db:query_result" value="p1=1, p2=8, p3=10"/>
+      <float key="db:query_duration_ms" value="28.715"/>
+      <int key="n_variables" value="5"/>
+      <int key="p1" value="1"/>
+      <int key="p2" value="8"/>
+      <int key="p3" value="10"/>
+      <int key="p4" value="0"/>
+      <int key="p5" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Compute total value"/>
+      <date key="time:timestamp" value="2024-01-01T09:24:54+00:00"/>
+      <string key="db:query" value="SELECT COALESCE(SUM(price), 0) AS t FROM items WHERE id = ANY(ARRAY_REMOVE(ARRAY[1, 8, 10, 0, 0]::bigint[], 0))"/>
+      <string key="db:query_result" value="115.98"/>
+      <float key="db:query_duration_ms" value="12.767"/>
+      <int key="n_variables" value="1"/>
+      <float key="t" value="115.98"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Standard checkout"/>
+      <date key="time:timestamp" value="2024-01-01T09:26:06+00:00"/>
+      <string key="db:query" value="SELECT COALESCE(SUM(price), 0) FROM items WHERE id = ANY(ARRAY_REMOVE(ARRAY[1, 8, 10, 0, 0]::bigint[], 0))"/>
+      <string key="db:query_result" value="115.98"/>
+      <float key="db:query_duration_ms" value="13.998"/>
+      <int key="n_variables" value="1"/>
+      <string key="guard" value="(vip==false)"/>
+      <float key="total" value="115.98"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Ship item/s"/>
+      <date key="time:timestamp" value="2024-01-01T09:27:06+00:00"/>
+      <string key="db:query" value="UPDATE customers SET balance = balance - 115.98 WHERE id = 8"/>
+      <string key="db:query_result" value="1"/>
+      <float key="db:query_duration_ms" value="15.794"/>
+      <int key="n_variables" value="1"/>
+      <string key="guard" value="(total&lt;=a)"/>
+      <float key="resultBalance" value="1.0"/>
+    </event>
+  </trace>
+</log>
